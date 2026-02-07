@@ -7,12 +7,15 @@ export async function GET() {
 
     if (!session) {
       return NextResponse.json(
-        { error: "غير مصرح" },
+        { authenticated: false },
+        // { error: "غير مصرح" },
         { status: 401 }
       )
     }
 
-    return NextResponse.json({ user: session.user })
+    return NextResponse.json({ 
+      authenticated: true,
+      user: session.user, })
   } catch (error: any) {
     console.error("Get user API error:", error)
     return NextResponse.json(

@@ -134,6 +134,8 @@ export async function signIn(
       [email],
     );
 
+    console.log(await bcrypt.compare(password, user.password));
+    console.log(await bcrypt.hash("demo123", 12));
     if (!user) {
       return {
         user: null,
