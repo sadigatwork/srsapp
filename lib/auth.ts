@@ -115,13 +115,19 @@ export async function signIn(
       "SELECT id, full_name, email, password_hash as password, role, phone, NULL as avatar_url, is_active, created_at, updated_at FROM users WHERE email = $1 AND (is_active = true OR is_active IS NULL)",
       [email]
     )
+    console.log("HASH FROM DB:", user.password)
+    console.log("PASSWORD LENGTH:", password.length)
+console.log("PASSWORD VALUE:", JSON.stringify(password))
 
+console.log(await bcrypt.compare(password, user.password))
+console.log(await bcrypt.hash("demo123", 12))
     if (!user) {
       return { user: null, token: null, error: "البريد الإلكتروني أو كلمة المرور غير صحيحة" }
     }
-
+    
     // Verify password
     const isValid = await verifyPassword(password, user.password)
+    console.log("COMPARE RESULT:", isValid)
     if (!isValid) {
       return { user: null, token: null, error: "البريد الإلكتروني أو كلمة المرور غير صحيحة" }
     }
